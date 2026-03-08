@@ -1,17 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import LanguageSwitcher from "./LanguageSwitcher";
 
-const NAV_LINKS = [
-  { label: "Festivals", href: "/festivals" },
-  { label: "Temples", href: "/temples" },
-  { label: "Deities", href: "/deities" },
-  { label: "Mantras", href: "/mantras" },
-  { label: "Scriptures", href: "/scriptures" },
-];
+const NAV_KEYS = ["festivals", "temples", "deities", "mantras", "scriptures"] as const;
+type NavKey = (typeof NAV_KEYS)[number];
 
 export default function Header() {
+  const t = useTranslations("nav");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -36,7 +34,7 @@ export default function Header() {
         padding: "1rem 2rem",
       }}
     >
-      <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", alignItems: "center", gap: "2rem" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", alignItems: "center", gap: "1.5rem" }}>
         {/* Logo */}
         <Link
           href="/"
@@ -64,10 +62,10 @@ export default function Header() {
           }}
           className="sk-desktop-nav"
         >
-          {NAV_LINKS.map((link) => (
+          {NAV_KEYS.map((key) => (
             <Link
-              key={link.href}
-              href={link.href}
+              key={key}
+              href={`/${key}`}
               style={{
                 color: "#ffd699",
                 textDecoration: "none",
@@ -88,15 +86,20 @@ export default function Header() {
                 (e.target as HTMLElement).style.color = "#ffd699";
               }}
             >
-              {link.label}
+              {t(key)}
             </Link>
           ))}
         </nav>
 
+        {/* Language switcher */}
+        <div className="sk-desktop-nav">
+          <LanguageSwitcher />
+        </div>
+
         {/* Mobile menu button */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
+          aria-label={t("toggleMenu")}
           style={{
             display: "none",
             marginLeft: "auto",
@@ -127,10 +130,10 @@ export default function Header() {
           }}
           className="sk-mobile-nav"
         >
-          {NAV_LINKS.map((link) => (
+          {NAV_KEYS.map((key) => (
             <Link
-              key={link.href}
-              href={link.href}
+              key={key}
+              href={`/${key}`}
               onClick={() => setMenuOpen(false)}
               style={{
                 color: "#ffd699",
@@ -142,9 +145,12 @@ export default function Header() {
                 padding: "0.6rem 0",
               }}
             >
-              {link.label}
+              {t(key)}
             </Link>
           ))}
+          <div style={{ marginTop: "0.5rem" }}>
+            <LanguageSwitcher />
+          </div>
         </nav>
       )}
 

@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getFestivalBySlug, getFestivalSlugs } from "@/lib/content";
+import { Link } from "@/i18n/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import CountdownTimer from "@/components/shared/CountdownTimer";
 import PujaChecklist from "@/components/shared/PujaChecklist";
@@ -8,15 +10,17 @@ import VirtualAarti from "@/components/shared/VirtualAarti";
 import AudioPlayer from "@/components/shared/AudioPlayer";
 import Badge from "@/components/ui/Badge";
 import FadeIn from "@/components/shared/FadeIn";
-import Link from "next/link";
 import type { Metadata } from "next";
+import { locales } from "@/i18n/config";
 
 interface Props {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return getFestivalSlugs().map((slug) => ({ slug }));
+export function generateStaticParams() {
+  return locales.flatMap((locale) =>
+    getFestivalSlugs().map((slug) => ({ locale, slug }))
+  );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -29,7 +33,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// MDX components available in festival pages
 const components = {
   CountdownTimer,
   PujaChecklist,
@@ -39,13 +42,15 @@ const components = {
 };
 
 export default async function FestivalPage({ params }: Props) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations("festivalDetail");
   const festival = getFestivalBySlug(slug);
   if (!festival) notFound();
 
   const { frontmatter, content } = festival;
 
-  // Find the next upcoming date
   const today = new Date().toISOString().split("T")[0];
   const nextDate = frontmatter.gregorianDates
     ?.filter((d) => d.date >= today)
@@ -97,12 +102,11 @@ export default async function FestivalPage({ params }: Props) {
             {frontmatter.description}
           </p>
 
-          {/* Countdown */}
           {nextDate && (
             <div style={{ maxWidth: 600, margin: "0 auto 1rem" }}>
               <CountdownTimer
                 targetDate={`${nextDate.date}T18:00:00+05:30`}
-                celebrationMessage={`Happy ${frontmatter.title}! 🙏`}
+                celebrationMessage={t("celebrationMessage", { title: frontmatter.title })}
               />
             </div>
           )}
@@ -110,19 +114,14 @@ export default async function FestivalPage({ params }: Props) {
       </div>
 
       {/* Main content */}
-      <div
-        style={{
-          maxWidth: 800,
-          margin: "0 auto",
-          padding: "3rem 2rem",
-        }}
-      >
-        {/* Associated deities, temples, mantras */}
+      <div style={{ maxWidth: 800, margin: "0 auto", padding: "3rem 2rem" }}>
         <FadeIn>
           <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", marginBottom: "2rem" }}>
             {frontmatter.deity?.length > 0 && (
               <div>
-                <div style={{ fontSize: "0.75rem", color: "var(--text-light)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "0.4rem" }}>Deities</div>
+                <div style={{ fontSize: "0.75rem", color: "var(--text-light)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "0.4rem" }}>
+                  {t("deities")}
+                </div>
                 <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
                   {frontmatter.deity.map((d) => (
                     <Link key={d} href={`/deities/${d}`}>
@@ -134,7 +133,9 @@ export default async function FestivalPage({ params }: Props) {
             )}
             {(frontmatter.mantras?.length ?? 0) > 0 && (
               <div>
-                <div style={{ fontSize: "0.75rem", color: "var(--text-light)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "0.4rem" }}>Mantras</div>
+                <div style={{ fontSize: "0.75rem", color: "var(--text-light)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "0.4rem" }}>
+                  {t("mantras")}
+                </div>
                 <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
                   {(frontmatter.mantras ?? []).map((m) => (
                     <Link key={m} href={`/mantras/${m}`}>
@@ -147,21 +148,15 @@ export default async function FestivalPage({ params }: Props) {
           </div>
         </FadeIn>
 
-        {/* MDX content */}
         <FadeIn>
           <article
-            style={{
-              lineHeight: 1.9,
-              color: "var(--text-dark)",
-              fontSize: "1rem",
-            }}
+            style={{ lineHeight: 1.9, color: "var(--text-dark)", fontSize: "1rem" }}
             className="sk-prose"
           >
             <MDXRemote source={content} components={components} />
           </article>
         </FadeIn>
 
-        {/* Interactive tools */}
         <FadeIn>
           <div
             style={{
@@ -181,7 +176,7 @@ export default async function FestivalPage({ params }: Props) {
                 textAlign: "center",
               }}
             >
-              Puja Checklist
+              {t("pujaChecklist")}
             </h2>
             <PujaChecklist
               items={[
@@ -222,7 +217,7 @@ export default async function FestivalPage({ params }: Props) {
                 marginBottom: "2rem",
               }}
             >
-              Virtual Aarti
+              {t("virtualAarti")}
             </h2>
             <VirtualAarti deity={frontmatter.title} storageKey={`sk_aarti_${slug}`} />
           </div>
@@ -247,16 +242,15 @@ export default async function FestivalPage({ params }: Props) {
                 textAlign: "center",
               }}
             >
-              Vrat Timer
+              {t("vratTimer")}
             </h2>
             <VratTimer />
           </div>
         </FadeIn>
 
-        {/* Navigation */}
         <div style={{ marginTop: "3rem", display: "flex", justifyContent: "center" }}>
           <Link href="/festivals" className="sk-btn sk-btn-outline">
-            ← All Festivals
+            {t("backToFestivals")}
           </Link>
         </div>
       </div>

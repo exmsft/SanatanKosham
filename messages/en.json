@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "siteTitle": "SanatanKosham — Hindu Knowledge Hub",
+    "siteDescription": "A comprehensive digital knowledge hub for Hindu festivals, temples, deities, scriptures, and mantras. Explore the timeless wisdom of Sanatana Dharma."
+  },
+  "nav": {
+    "festivals": "Festivals",
+    "temples": "Temples",
+    "deities": "Deities",
+    "mantras": "Mantras",
+    "scriptures": "Scriptures",
+    "toggleMenu": "Toggle menu"
+  },
+  "home": {
+    "subtitle": "सनातन कोशम् — The Treasury of Sanatana Dharma",
+    "tagline": "Festivals · Temples · Deities · Mantras · Scriptures",
+    "exploreFestivals": "Explore Festivals",
+    "sacredTemples": "Sacred Temples",
+    "scrollDown": "↓ Explore",
+    "statsFestivals": "Festivals",
+    "statsTemples": "Temples",
+    "statsDeities": "Deities",
+    "statsWisdom": "Wisdom",
+    "upcomingTitle": "Upcoming Sacred Days",
+    "exploreLink": "Explore →",
+    "koshamTitle": "Explore the Kosham",
+    "koshamDesc": "SanatanKosham is a living digital library of Hindu knowledge — growing steadily with festivals, sacred sites, divine lore, mantras, and scripture.",
+    "quoteText": "\u201cसर्वे भवन्तु सुखिनः | सर्वे सन्तु निरामयाः\u201d",
+    "quoteTranslation": "May all beings be happy. May all be free from disease. — Brihadaranyaka Upanishad"
+  },
+  "categories": {
+    "festivals": {
+      "title": "Festivals",
+      "description": "Discover the origins, rituals, and significance of major Hindu festivals throughout the sacred calendar."
+    },
+    "temples": {
+      "title": "Temples",
+      "description": "Explore sacred temples across India and the world — their history, architecture, and travel guidelines."
+    },
+    "deities": {
+      "title": "Deities",
+      "description": "Learn about the Hindu pantheon — the stories, symbolism, and worship of deva, devi, and divine forms."
+    },
+    "mantras": {
+      "title": "Mantras",
+      "description": "Sacred Sanskrit mantras with transliteration, meaning, pronunciation, and audio playback."
+    },
+    "scriptures": {
+      "title": "Scriptures",
+      "description": "The Vedas, Puranas, Upanishads, and Smritis — the timeless texts of Sanatana Dharma."
+    }
+  },
+  "festivals": {
+    "pageTitle": "Hindu Festivals",
+    "pageDescription": "Explore major Hindu festivals — their origin, rituals, significance, and calendar dates.",
+    "heroSubtitle": "The sacred calendar of Sanatana Dharma — festivals that connect us to the divine, to nature, and to each other through ritual, devotion, and celebration.",
+    "sectionTitle": "Parv, Vrat & Tyohaar",
+    "empty": "No festivals published yet.",
+    "featured": "★ Featured",
+    "nextDate": "Next:"
+  },
+  "festivalDetail": {
+    "deities": "Deities",
+    "mantras": "Mantras",
+    "pujaChecklist": "Puja Checklist",
+    "virtualAarti": "Virtual Aarti",
+    "vratTimer": "Vrat Timer",
+    "backToFestivals": "← All Festivals",
+    "celebrationMessage": "Happy {title}! 🙏"
+  },
+  "temples": {
+    "pageTitle": "Hindu Temples",
+    "pageDescription": "Explore sacred temples across India and the world — their history, deity, architecture, and visitor information.",
+    "heroSubtitle": "Sacred abodes of the divine — where stone meets spirit and devotion transcends time.",
+    "sectionTitle": "Sacred Temples",
+    "empty": "No temples published yet."
+  },
+  "templeDetail": {
+    "backToTemples": "← All Temples",
+    "location": "Location",
+    "deity": "Deity",
+    "style": "Style"
+  },
+  "deities": {
+    "pageTitle": "Hindu Deities",
+    "pageDescription": "Learn about the Hindu pantheon — the stories, symbolism, and worship of deva, devi, and divine forms.",
+    "heroSubtitle": "The divine pantheon of Sanatana Dharma — each deity a facet of the one infinite consciousness.",
+    "sectionTitle": "The Divine Pantheon",
+    "empty": "No deities published yet."
+  },
+  "deityDetail": {
+    "backToDeities": "← All Deities",
+    "festivals": "Festivals",
+    "mantras": "Mantras"
+  },
+  "mantras": {
+    "pageTitle": "Sacred Mantras",
+    "pageDescription": "Sacred Sanskrit mantras with transliteration, meaning, pronunciation, and audio playback.",
+    "heroSubtitle": "The vibrational power of sacred sound — mantras that purify, protect, and illuminate the path to the divine.",
+    "sectionTitle": "Mantras & Stotras",
+    "empty": "No mantras published yet."
+  },
+  "mantraDetail": {
+    "backToMantras": "← All Mantras",
+    "deity": "Deity",
+    "type": "Type"
+  },
+  "scriptures": {
+    "pageTitle": "Hindu Scriptures",
+    "pageDescription": "The Vedas, Puranas, Upanishads, and Smritis — the timeless texts of Sanatana Dharma.",
+    "heroSubtitle": "The eternal wisdom of Sanatana Dharma — sacred texts that have illumined seekers for millennia.",
+    "sectionTitle": "Sacred Texts",
+    "empty": "No scriptures published yet."
+  },
+  "scriptureDetail": {
+    "backToScriptures": "← All Scriptures",
+    "category": "Category",
+    "language": "Language"
+  },
+  "footer": {
+    "tagline": "सर्वे भवन्तु सुखिनः — May all beings be happy",
+    "copyright": "© {year} SanatanKosham.com — A digital preservation of Sanatana Dharma knowledge.",
+    "builtWith": "Built with devotion. Content is for educational and spiritual purposes."
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "ariaLabel": "Select language"
+  }
+}

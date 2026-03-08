@@ -1,6 +1,12 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 
-export default function Footer() {
+const NAV_KEYS = ["festivals", "temples", "deities", "mantras", "scriptures"] as const;
+
+export default async function Footer() {
+  const t = await getTranslations("footer");
+  const tNav = await getTranslations("nav");
+
   return (
     <footer
       style={{
@@ -32,7 +38,7 @@ export default function Footer() {
             marginBottom: "2rem",
           }}
         >
-          सर्वे भवन्तु सुखिनः — May all beings be happy
+          {t("tagline")}
         </p>
 
         <div
@@ -44,16 +50,10 @@ export default function Footer() {
             marginBottom: "2rem",
           }}
         >
-          {[
-            { label: "Festivals", href: "/festivals" },
-            { label: "Temples", href: "/temples" },
-            { label: "Deities", href: "/deities" },
-            { label: "Mantras", href: "/mantras" },
-            { label: "Scriptures", href: "/scriptures" },
-          ].map((link) => (
+          {NAV_KEYS.map((key) => (
             <Link
-              key={link.href}
-              href={link.href}
+              key={key}
+              href={`/${key}`}
               style={{
                 color: "rgba(255,215,100,0.7)",
                 textDecoration: "none",
@@ -63,7 +63,7 @@ export default function Footer() {
                 transition: "color 0.2s ease",
               }}
             >
-              {link.label}
+              {tNav(key)}
             </Link>
           ))}
         </div>
@@ -77,10 +77,10 @@ export default function Footer() {
           }}
         >
           <p>
-            © {new Date().getFullYear()} SanatanKosham.com — A digital preservation of Sanatana Dharma knowledge.
+            {t("copyright", { year: new Date().getFullYear() })}
           </p>
           <p style={{ marginTop: "0.3rem" }}>
-            Built with devotion. Content is for educational and spiritual purposes.
+            {t("builtWith")}
           </p>
         </div>
       </div>

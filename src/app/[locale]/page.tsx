@@ -1,50 +1,36 @@
-import Link from "next/link";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { getUpcomingFestivals, getAllFestivals, getAllTemples, getAllDeities } from "@/lib/content";
 import SacredGeometry from "@/components/shared/SacredGeometry";
 import Particles from "@/components/shared/Particles";
 import FadeIn from "@/components/shared/FadeIn";
 import Card from "@/components/ui/Card";
 import SectionTitle from "@/components/ui/SectionTitle";
+import { locales } from "@/i18n/config";
 
-const CATEGORIES = [
-  {
-    title: "Festivals",
-    href: "/festivals",
-    icon: "🪔",
-    description: "Discover the origins, rituals, and significance of major Hindu festivals throughout the sacred calendar.",
-    color: "var(--saffron)",
-  },
-  {
-    title: "Temples",
-    href: "/temples",
-    icon: "🛕",
-    description: "Explore sacred temples across India and the world — their history, architecture, and travel guidelines.",
-    color: "var(--gold)",
-  },
-  {
-    title: "Deities",
-    href: "/deities",
-    icon: "✨",
-    description: "Learn about the Hindu pantheon — the stories, symbolism, and worship of deva, devi, and divine forms.",
-    color: "var(--vermillion)",
-  },
-  {
-    title: "Mantras",
-    href: "/mantras",
-    icon: "ॐ",
-    description: "Sacred Sanskrit mantras with transliteration, meaning, pronunciation, and audio playback.",
-    color: "var(--bright-gold)",
-  },
-  {
-    title: "Scriptures",
-    href: "/scriptures",
-    icon: "📜",
-    description: "The Vedas, Puranas, Upanishads, and Smritis — the timeless texts of Sanatana Dharma.",
-    color: "var(--warm-orange)",
-  },
-];
+const CATEGORY_KEYS = [
+  { key: "festivals", href: "/festivals", icon: "🪔", color: "var(--saffron)" },
+  { key: "temples", href: "/temples", icon: "🛕", color: "var(--gold)" },
+  { key: "deities", href: "/deities", icon: "✨", color: "var(--vermillion)" },
+  { key: "mantras", href: "/mantras", icon: "ॐ", color: "var(--bright-gold)" },
+  { key: "scriptures", href: "/scriptures", icon: "📜", color: "var(--warm-orange)" },
+] as const;
 
-export default function Home() {
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function Home({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations("home");
+  const tCat = await getTranslations("categories");
+
   const upcomingFestivals = getUpcomingFestivals(4);
   const allFestivals = getAllFestivals();
   const allTemples = getAllTemples();
@@ -123,7 +109,7 @@ export default function Home() {
               marginBottom: "0.5rem",
             }}
           >
-            सनातन कोशम् — The Treasury of Sanatana Dharma
+            {t("subtitle")}
           </p>
 
           <p
@@ -135,19 +121,19 @@ export default function Home() {
               marginBottom: "2.5rem",
             }}
           >
-            Festivals · Temples · Deities · Mantras · Scriptures
+            {t("tagline")}
           </p>
 
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
             <Link href="/festivals" className="sk-btn sk-btn-primary">
-              Explore Festivals
+              {t("exploreFestivals")}
             </Link>
             <Link
               href="/temples"
               className="sk-btn sk-btn-outline"
               style={{ color: "var(--bright-gold)", borderColor: "var(--bright-gold)" }}
             >
-              Sacred Temples
+              {t("sacredTemples")}
             </Link>
           </div>
         </div>
@@ -164,7 +150,7 @@ export default function Home() {
             textTransform: "uppercase",
           }}
         >
-          ↓ Explore
+          {t("scrollDown")}
         </div>
       </section>
 
@@ -182,10 +168,10 @@ export default function Home() {
           }}
         >
           {[
-            { value: allFestivals.length, label: "Festivals" },
-            { value: allTemples.length, label: "Temples" },
-            { value: allDeities.length, label: "Deities" },
-            { value: "∞", label: "Wisdom" },
+            { value: allFestivals.length, label: t("statsFestivals") },
+            { value: allTemples.length, label: t("statsTemples") },
+            { value: allDeities.length, label: t("statsDeities") },
+            { value: "∞", label: t("statsWisdom") },
           ].map((stat) => (
             <div key={stat.label}>
               <div style={{ fontFamily: "'Cinzel Decorative', serif", fontSize: "1.8rem", color: "var(--bright-gold)", lineHeight: 1 }}>
@@ -204,7 +190,7 @@ export default function Home() {
         <section style={{ padding: "5rem 2rem", background: "var(--warm-bg)", position: "relative", zIndex: 1 }}>
           <div style={{ maxWidth: 1100, margin: "0 auto" }}>
             <FadeIn>
-              <SectionTitle>Upcoming Sacred Days</SectionTitle>
+              <SectionTitle>{t("upcomingTitle")}</SectionTitle>
             </FadeIn>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem" }}>
               {upcomingFestivals.map((f) => (
@@ -220,7 +206,7 @@ export default function Home() {
                       {f.frontmatter.description}
                     </p>
                     <div style={{ marginTop: "1rem", fontSize: "0.8rem", color: "var(--light-saffron)", fontWeight: 600 }}>
-                      Explore →
+                      {t("exploreLink")}
                     </div>
                   </Card>
                 </FadeIn>
@@ -241,7 +227,7 @@ export default function Home() {
       >
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <FadeIn>
-            <SectionTitle>Explore the Kosham</SectionTitle>
+            <SectionTitle>{t("koshamTitle")}</SectionTitle>
             <p
               style={{
                 textAlign: "center",
@@ -252,19 +238,19 @@ export default function Home() {
                 lineHeight: 1.8,
               }}
             >
-              SanatanKosham is a living digital library of Hindu knowledge — growing steadily with festivals, sacred sites, divine lore, mantras, and scripture.
+              {t("koshamDesc")}
             </p>
           </FadeIn>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem" }}>
-            {CATEGORIES.map((cat) => (
+            {CATEGORY_KEYS.map((cat) => (
               <FadeIn key={cat.href}>
                 <Card href={cat.href}>
                   <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>{cat.icon}</div>
                   <h3 style={{ fontFamily: "'Cinzel Decorative', serif", fontSize: "1rem", color: cat.color, marginBottom: "0.5rem" }}>
-                    {cat.title}
+                    {tCat(`${cat.key}.title`)}
                   </h3>
                   <p style={{ fontSize: "0.85rem", color: "var(--text-medium)", lineHeight: 1.7 }}>
-                    {cat.description}
+                    {tCat(`${cat.key}.description`)}
                   </p>
                 </Card>
               </FadeIn>
@@ -289,10 +275,10 @@ export default function Home() {
         </div>
         <FadeIn style={{ position: "relative", zIndex: 2, maxWidth: 700, margin: "0 auto" }}>
           <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(1.1rem, 3vw, 1.4rem)", color: "rgba(255,215,100,0.9)", lineHeight: 1.9, marginBottom: "1rem" }}>
-            &ldquo;सर्वे भवन्तु सुखिनः | सर्वे सन्तु निरामयाः&rdquo;
+            {t("quoteText")}
           </p>
           <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem", letterSpacing: "1px" }}>
-            May all beings be happy. May all be free from disease. — Brihadaranyaka Upanishad
+            {t("quoteTranslation")}
           </p>
         </FadeIn>
       </section>

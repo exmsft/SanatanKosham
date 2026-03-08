@@ -1,17 +1,19 @@
 import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getScriptureBySlug, getScriptureSlugs } from "@/lib/content";
+import { Link } from "@/i18n/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Badge from "@/components/ui/Badge";
 import FadeIn from "@/components/shared/FadeIn";
-import Link from "next/link";
 import type { Metadata } from "next";
+import { locales } from "@/i18n/config";
 
-interface Props {
-  params: Promise<{ slug: string }>;
-}
+interface Props { params: Promise<{ locale: string; slug: string }> }
 
-export async function generateStaticParams() {
-  return getScriptureSlugs().map((slug) => ({ slug }));
+export function generateStaticParams() {
+  return locales.flatMap((locale) =>
+    getScriptureSlugs().map((slug) => ({ locale, slug }))
+  );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -22,7 +24,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ScripturePage({ params }: Props) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("scriptureDetail");
   const scripture = getScriptureBySlug(slug);
   if (!scripture) notFound();
   const { frontmatter, content } = scripture;
@@ -58,7 +62,7 @@ export default async function ScripturePage({ params }: Props) {
         </FadeIn>
 
         <div style={{ marginTop: "3rem", display: "flex", gap: "1rem", justifyContent: "center" }}>
-          <Link href="/scriptures" className="sk-btn sk-btn-outline">← All Scriptures</Link>
+          <Link href="/scriptures" className="sk-btn sk-btn-outline">{t("backToScriptures")}</Link>
         </div>
       </div>
 

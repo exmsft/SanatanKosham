@@ -1,17 +1,19 @@
 import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getTempleBySlug, getTempleSlugs } from "@/lib/content";
+import { Link } from "@/i18n/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Badge from "@/components/ui/Badge";
 import FadeIn from "@/components/shared/FadeIn";
-import Link from "next/link";
 import type { Metadata } from "next";
+import { locales } from "@/i18n/config";
 
-interface Props {
-  params: Promise<{ slug: string }>;
-}
+interface Props { params: Promise<{ locale: string; slug: string }> }
 
-export async function generateStaticParams() {
-  return getTempleSlugs().map((slug) => ({ slug }));
+export function generateStaticParams() {
+  return locales.flatMap((locale) =>
+    getTempleSlugs().map((slug) => ({ locale, slug }))
+  );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -22,7 +24,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function TemplePage({ params }: Props) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("templeDetail");
   const temple = getTempleBySlug(slug);
   if (!temple) notFound();
   const { frontmatter, content } = temple;
@@ -36,7 +40,7 @@ export default async function TemplePage({ params }: Props) {
       <div style={{ background: "linear-gradient(135deg, var(--deep-blue), var(--royal-purple))", padding: "4rem 2rem 5rem", textAlign: "center" }}>
         <FadeIn>
           <div style={{ display: "flex", gap: "0.5rem", justifyContent: "center", marginBottom: "1rem", flexWrap: "wrap" }}>
-            {frontmatter.templeType?.map((t) => <Badge key={t}>{t}</Badge>)}
+            {frontmatter.templeType?.map((tp) => <Badge key={tp}>{tp}</Badge>)}
           </div>
           <h1 style={{ fontFamily: "'Cinzel Decorative', serif", fontSize: "clamp(1.5rem, 4vw, 3rem)", background: "linear-gradient(135deg, var(--bright-gold), var(--saffron))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", marginBottom: "0.75rem", lineHeight: 1.2 }}>
             {frontmatter.title}
@@ -70,7 +74,7 @@ export default async function TemplePage({ params }: Props) {
         </FadeIn>
 
         <div style={{ marginTop: "3rem", display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-          <Link href="/temples" className="sk-btn sk-btn-outline">← All Temples</Link>
+          <Link href="/temples" className="sk-btn sk-btn-outline">{t("backToTemples")}</Link>
           <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="sk-btn sk-btn-primary">View on Maps</a>
         </div>
       </div>

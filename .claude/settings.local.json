@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm list next-intl)",
+      "Bash(npm run build)"
+    ]
+  }
+}

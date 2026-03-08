@@ -1,18 +1,20 @@
 import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getDeityBySlug, getDeitySlugs } from "@/lib/content";
+import { Link } from "@/i18n/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import VirtualAarti from "@/components/shared/VirtualAarti";
 import Badge from "@/components/ui/Badge";
 import FadeIn from "@/components/shared/FadeIn";
-import Link from "next/link";
 import type { Metadata } from "next";
+import { locales } from "@/i18n/config";
 
-interface Props {
-  params: Promise<{ slug: string }>;
-}
+interface Props { params: Promise<{ locale: string; slug: string }> }
 
-export async function generateStaticParams() {
-  return getDeitySlugs().map((slug) => ({ slug }));
+export function generateStaticParams() {
+  return locales.flatMap((locale) =>
+    getDeitySlugs().map((slug) => ({ locale, slug }))
+  );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -23,7 +25,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function DeityPage({ params }: Props) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("deityDetail");
   const deity = getDeityBySlug(slug);
   if (!deity) notFound();
   const { frontmatter, content } = deity;
@@ -52,7 +56,6 @@ export default async function DeityPage({ params }: Props) {
       </div>
 
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "3rem 2rem" }}>
-        {/* Info cards */}
         <FadeIn>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1rem", marginBottom: "2.5rem" }}>
             {frontmatter.consort && (
@@ -86,7 +89,7 @@ export default async function DeityPage({ params }: Props) {
         </FadeIn>
 
         <div style={{ marginTop: "3rem", display: "flex", gap: "1rem", justifyContent: "center" }}>
-          <Link href="/deities" className="sk-btn sk-btn-outline">← All Deities</Link>
+          <Link href="/deities" className="sk-btn sk-btn-outline">{t("backToDeities")}</Link>
         </div>
       </div>
 

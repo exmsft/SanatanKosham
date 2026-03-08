@@ -37,6 +37,20 @@ body {
   overflow-x: hidden;
 }
 
+/* ─── Indic Script Fonts ────────────────────────────────────────────────── */
+:lang(hi) body, :lang(hi) p, :lang(hi) span, :lang(hi) li, :lang(hi) a, :lang(hi) button {
+  font-family: var(--font-noto-devanagari), 'Poppins', sans-serif;
+}
+:lang(kn) body, :lang(kn) p, :lang(kn) span, :lang(kn) li, :lang(kn) a, :lang(kn) button {
+  font-family: var(--font-noto-kannada), sans-serif;
+}
+:lang(te) body, :lang(te) p, :lang(te) span, :lang(te) li, :lang(te) a, :lang(te) button {
+  font-family: var(--font-noto-telugu), sans-serif;
+}
+:lang(bn) body, :lang(bn) p, :lang(bn) span, :lang(bn) li, :lang(bn) a, :lang(bn) button {
+  font-family: var(--font-noto-bengali), sans-serif;
+}
+
 /* ─── Particles ─────────────────────────────────────────────────────────── */
 .particles {
   position: fixed;

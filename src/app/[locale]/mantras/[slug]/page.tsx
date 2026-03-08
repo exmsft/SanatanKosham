@@ -1,19 +1,21 @@
 import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getMantraBySlug, getMantraSlugs } from "@/lib/content";
+import { Link } from "@/i18n/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import AudioPlayer from "@/components/shared/AudioPlayer";
 import OmVisualizer from "@/components/shared/OmVisualizer";
 import Badge from "@/components/ui/Badge";
 import FadeIn from "@/components/shared/FadeIn";
-import Link from "next/link";
 import type { Metadata } from "next";
+import { locales } from "@/i18n/config";
 
-interface Props {
-  params: Promise<{ slug: string }>;
-}
+interface Props { params: Promise<{ locale: string; slug: string }> }
 
-export async function generateStaticParams() {
-  return getMantraSlugs().map((slug) => ({ slug }));
+export function generateStaticParams() {
+  return locales.flatMap((locale) =>
+    getMantraSlugs().map((slug) => ({ locale, slug }))
+  );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -24,7 +26,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function MantraPage({ params }: Props) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("mantraDetail");
   const mantra = getMantraBySlug(slug);
   if (!mantra) notFound();
   const { frontmatter, content } = mantra;
@@ -39,19 +43,7 @@ export default async function MantraPage({ params }: Props) {
           <h1 style={{ fontFamily: "'Cinzel Decorative', serif", fontSize: "clamp(1.5rem, 3.5vw, 2.5rem)", background: "linear-gradient(135deg, var(--bright-gold), var(--saffron))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", marginBottom: "1.5rem" }}>
             {frontmatter.title}
           </h1>
-          <p
-            style={{
-              fontFamily: "'Noto Sans Devanagari', 'Playfair Display', serif",
-              fontSize: "clamp(1.2rem, 3vw, 2rem)",
-              color: "rgba(255,215,100,0.95)",
-              letterSpacing: "3px",
-              lineHeight: 1.8,
-              marginBottom: "1rem",
-              textShadow: "0 0 20px rgba(255,215,0,0.3)",
-              maxWidth: 700,
-              margin: "0 auto 1rem",
-            }}
-          >
+          <p style={{ fontFamily: "'Noto Sans Devanagari', 'Playfair Display', serif", fontSize: "clamp(1.2rem, 3vw, 2rem)", color: "rgba(255,215,100,0.95)", letterSpacing: "3px", lineHeight: 1.8, marginBottom: "1rem", textShadow: "0 0 20px rgba(255,215,0,0.3)", maxWidth: 700, margin: "0 auto 1rem" }}>
             {frontmatter.sanskrit}
           </p>
           <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", color: "rgba(255,255,255,0.7)", fontSize: "1rem", letterSpacing: "1px", marginBottom: "1rem" }}>
@@ -64,7 +56,6 @@ export default async function MantraPage({ params }: Props) {
       </div>
 
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "3rem 2rem" }}>
-        {/* Om Visualizer + Audio */}
         <FadeIn>
           <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "2rem", alignItems: "center", background: "var(--cream)", border: "1px solid rgba(230,168,23,0.2)", borderRadius: "16px", padding: "2rem", marginBottom: "2.5rem" }}>
             <OmVisualizer size={180} />
@@ -98,7 +89,7 @@ export default async function MantraPage({ params }: Props) {
         </FadeIn>
 
         <div style={{ marginTop: "3rem", display: "flex", gap: "1rem", justifyContent: "center" }}>
-          <Link href="/mantras" className="sk-btn sk-btn-outline">← All Mantras</Link>
+          <Link href="/mantras" className="sk-btn sk-btn-outline">{t("backToMantras")}</Link>
         </div>
       </div>
 

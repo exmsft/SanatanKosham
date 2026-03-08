@@ -1,16 +1,35 @@
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getAllFestivals } from "@/lib/content";
+import { Link } from "@/i18n/navigation";
 import Card from "@/components/ui/Card";
 import SectionTitle from "@/components/ui/SectionTitle";
 import FadeIn from "@/components/shared/FadeIn";
 import Badge from "@/components/ui/Badge";
 import type { Metadata } from "next";
+import { locales } from "@/i18n/config";
 
-export const metadata: Metadata = {
-  title: "Hindu Festivals",
-  description: "Explore major Hindu festivals — their origin, rituals, significance, and calendar dates.",
-};
+interface Props {
+  params: Promise<{ locale: string }>;
+}
 
-export default function FestivalsPage() {
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "festivals" });
+  return {
+    title: t("pageTitle"),
+    description: t("pageDescription"),
+  };
+}
+
+export default async function FestivalsPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations("festivals");
   const festivals = getAllFestivals();
 
   return (
@@ -36,10 +55,10 @@ export default function FestivalsPage() {
               marginBottom: "1rem",
             }}
           >
-            Hindu Festivals
+            {t("pageTitle")}
           </h1>
           <p style={{ color: "rgba(255,255,255,0.7)", maxWidth: 600, margin: "0 auto", fontSize: "1rem", lineHeight: 1.7 }}>
-            The sacred calendar of Sanatana Dharma — festivals that connect us to the divine, to nature, and to each other through ritual, devotion, and celebration.
+            {t("heroSubtitle")}
           </p>
         </FadeIn>
       </div>
@@ -47,11 +66,11 @@ export default function FestivalsPage() {
       {/* Festival grid */}
       <section style={{ padding: "4rem 2rem", maxWidth: 1200, margin: "0 auto" }}>
         <FadeIn>
-          <SectionTitle>Parv, Vrat & Tyohaar</SectionTitle>
+          <SectionTitle>{t("sectionTitle")}</SectionTitle>
         </FadeIn>
 
         {festivals.length === 0 ? (
-          <p style={{ textAlign: "center", color: "var(--text-light)" }}>No festivals published yet.</p>
+          <p style={{ textAlign: "center", color: "var(--text-light)" }}>{t("empty")}</p>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "1.5rem" }}>
             {festivals.map((festival) => (
@@ -60,7 +79,7 @@ export default function FestivalsPage() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.75rem" }}>
                     <Badge>{festival.frontmatter.month}</Badge>
                     {festival.frontmatter.featured && (
-                      <span style={{ fontSize: "0.75rem", color: "var(--gold)" }}>★ Featured</span>
+                      <span style={{ fontSize: "0.75rem", color: "var(--gold)" }}>{t("featured")}</span>
                     )}
                   </div>
                   <h2
@@ -79,7 +98,7 @@ export default function FestivalsPage() {
                   </p>
                   {festival.frontmatter.gregorianDates?.[0] && (
                     <div style={{ fontSize: "0.78rem", color: "var(--saffron)", fontWeight: 600 }}>
-                      Next: {festival.frontmatter.gregorianDates.find((d) => d.date >= new Date().toISOString().split("T")[0])?.date ?? festival.frontmatter.gregorianDates[0].date}
+                      {t("nextDate")} {festival.frontmatter.gregorianDates.find((d) => d.date >= new Date().toISOString().split("T")[0])?.date ?? festival.frontmatter.gregorianDates[0].date}
                     </div>
                   )}
                   <div style={{ marginTop: "0.75rem", display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>

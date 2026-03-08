@@ -12,7 +12,11 @@ import type {
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
-function getContentDir(section: string) {
+function getContentDir(section: string, locale = "en"): string {
+  if (locale !== "en") {
+    const localeDir = path.join(CONTENT_DIR, locale, section);
+    if (fs.existsSync(localeDir)) return localeDir;
+  }
   return path.join(CONTENT_DIR, section);
 }
 
@@ -24,9 +28,10 @@ function readMdxFile<T>(filePath: string): ContentItem<T> {
 }
 
 function getAllItems<T extends { status: string }>(
-  section: string
+  section: string,
+  locale = "en"
 ): ContentItem<T>[] {
-  const dir = getContentDir(section);
+  const dir = getContentDir(section, locale);
   if (!fs.existsSync(dir)) return [];
   const files = fs
     .readdirSync(dir)
@@ -39,15 +44,16 @@ function getAllItems<T extends { status: string }>(
 
 function getItemBySlug<T>(
   section: string,
-  slug: string
+  slug: string,
+  locale = "en"
 ): ContentItem<T> | null {
-  const filePath = path.join(getContentDir(section), `${slug}.mdx`);
+  const filePath = path.join(getContentDir(section, locale), `${slug}.mdx`);
   if (!fs.existsSync(filePath)) return null;
   return readMdxFile<T>(filePath);
 }
 
-function getAllSlugs(section: string): string[] {
-  const dir = getContentDir(section);
+function getAllSlugs(section: string, locale = "en"): string[] {
+  const dir = getContentDir(section, locale);
   if (!fs.existsSync(dir)) return [];
   return fs
     .readdirSync(dir)
@@ -57,25 +63,25 @@ function getAllSlugs(section: string): string[] {
 
 // ─── Festivals ───────────────────────────────────────────────────────────────
 
-export function getAllFestivals() {
-  return getAllItems<FestivalFrontmatter>("festivals");
+export function getAllFestivals(locale = "en") {
+  return getAllItems<FestivalFrontmatter>("festivals", locale);
 }
 
-export function getFestivalBySlug(slug: string) {
-  return getItemBySlug<FestivalFrontmatter>("festivals", slug);
+export function getFestivalBySlug(slug: string, locale = "en") {
+  return getItemBySlug<FestivalFrontmatter>("festivals", slug, locale);
 }
 
-export function getFestivalSlugs() {
-  return getAllSlugs("festivals");
+export function getFestivalSlugs(locale = "en") {
+  return getAllSlugs("festivals", locale);
 }
 
-export function getFeaturedFestivals() {
-  return getAllFestivals().filter((f) => f.frontmatter.featured);
+export function getFeaturedFestivals(locale = "en") {
+  return getAllFestivals(locale).filter((f) => f.frontmatter.featured);
 }
 
-export function getUpcomingFestivals(limit = 5) {
+export function getUpcomingFestivals(limit = 5, locale = "en") {
   const today = new Date().toISOString().split("T")[0];
-  return getAllFestivals()
+  return getAllFestivals(locale)
     .map((f) => {
       const nextDate = f.frontmatter.gregorianDates
         ?.filter((d) => d.date >= today)
@@ -89,56 +95,56 @@ export function getUpcomingFestivals(limit = 5) {
 
 // ─── Temples ─────────────────────────────────────────────────────────────────
 
-export function getAllTemples() {
-  return getAllItems<TempleFrontmatter>("temples");
+export function getAllTemples(locale = "en") {
+  return getAllItems<TempleFrontmatter>("temples", locale);
 }
 
-export function getTempleBySlug(slug: string) {
-  return getItemBySlug<TempleFrontmatter>("temples", slug);
+export function getTempleBySlug(slug: string, locale = "en") {
+  return getItemBySlug<TempleFrontmatter>("temples", slug, locale);
 }
 
-export function getTempleSlugs() {
-  return getAllSlugs("temples");
+export function getTempleSlugs(locale = "en") {
+  return getAllSlugs("temples", locale);
 }
 
 // ─── Deities ─────────────────────────────────────────────────────────────────
 
-export function getAllDeities() {
-  return getAllItems<DeityFrontmatter>("deities");
+export function getAllDeities(locale = "en") {
+  return getAllItems<DeityFrontmatter>("deities", locale);
 }
 
-export function getDeityBySlug(slug: string) {
-  return getItemBySlug<DeityFrontmatter>("deities", slug);
+export function getDeityBySlug(slug: string, locale = "en") {
+  return getItemBySlug<DeityFrontmatter>("deities", slug, locale);
 }
 
-export function getDeitySlugs() {
-  return getAllSlugs("deities");
+export function getDeitySlugs(locale = "en") {
+  return getAllSlugs("deities", locale);
 }
 
 // ─── Mantras ─────────────────────────────────────────────────────────────────
 
-export function getAllMantras() {
-  return getAllItems<MantraFrontmatter>("mantras");
+export function getAllMantras(locale = "en") {
+  return getAllItems<MantraFrontmatter>("mantras", locale);
 }
 
-export function getMantraBySlug(slug: string) {
-  return getItemBySlug<MantraFrontmatter>("mantras", slug);
+export function getMantraBySlug(slug: string, locale = "en") {
+  return getItemBySlug<MantraFrontmatter>("mantras", slug, locale);
 }
 
-export function getMantraSlugs() {
-  return getAllSlugs("mantras");
+export function getMantraSlugs(locale = "en") {
+  return getAllSlugs("mantras", locale);
 }
 
 // ─── Scriptures ──────────────────────────────────────────────────────────────
 
-export function getAllScriptures() {
-  return getAllItems<ScriptureFrontmatter>("scriptures");
+export function getAllScriptures(locale = "en") {
+  return getAllItems<ScriptureFrontmatter>("scriptures", locale);
 }
 
-export function getScriptureBySlug(slug: string) {
-  return getItemBySlug<ScriptureFrontmatter>("scriptures", slug);
+export function getScriptureBySlug(slug: string, locale = "en") {
+  return getItemBySlug<ScriptureFrontmatter>("scriptures", slug, locale);
 }
 
-export function getScriptureSlugs() {
-  return getAllSlugs("scriptures");
+export function getScriptureSlugs(locale = "en") {
+  return getAllSlugs("scriptures", locale);
 }
