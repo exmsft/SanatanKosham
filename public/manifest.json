@@ -1,0 +1,25 @@
+{
+  "name": "SanatanKosham — Hindu Knowledge Hub",
+  "short_name": "SanatanKosham",
+  "description": "A comprehensive digital knowledge hub for Hindu festivals, temples, deities, scriptures, and mantras.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#fdf6ee",
+  "theme_color": "#e65100",
+  "categories": ["education", "lifestyle", "religion"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

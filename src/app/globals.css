@@ -1,26 +1,389 @@
 @import "tailwindcss";
 
+/* ─── Design Tokens (ported from Maha Shivaratri app) ──────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --deep-blue: #1a0a2e;
+  --royal-purple: #2d1854;
+  --warm-bg: #fdf6ee;
+  --warm-bg-alt: #fff8f0;
+  --cream: #fef9f2;
+  --gold: #d4a017;
+  --bright-gold: #e6a817;
+  --saffron: #e65100;
+  --light-saffron: #ff9800;
+  --vermillion: #e23d28;
+  --white: #f5f5f5;
+  --soft-white: #e0e0e0;
+  --text-dark: #3d2b1f;
+  --text-medium: #5c4033;
+  --text-light: #7a6052;
+  --warm-orange: #ff7043;
+  --soft-gold-bg: rgba(230, 168, 23, 0.08);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Base ──────────────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--warm-bg);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* ─── Particles ─────────────────────────────────────────────────────────── */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  background: var(--light-saffron);
+  border-radius: 50%;
+  animation: float-up linear infinite;
+  opacity: 0;
+}
+
+@keyframes float-up {
+  0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.5; }
+  100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+
+/* ─── Animations ────────────────────────────────────────────────────────── */
+@keyframes glow {
+  from { text-shadow: 0 0 40px rgba(255,215,0,0.6), 0 0 80px rgba(255,215,0,0.3); }
+  to   { text-shadow: 0 0 60px rgba(255,215,0,0.8), 0 0 120px rgba(255,215,0,0.5), 0 0 160px rgba(255,111,0,0.3); }
+}
+
+@keyframes pulse-text {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+
+@keyframes geo-spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes geo-spin-rev  { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+
+@keyframes flame-flicker {
+  0%,100% { transform: scaleY(1) scaleX(1); }
+  25%     { transform: scaleY(1.08) scaleX(0.96); }
+  50%     { transform: scaleY(0.95) scaleX(1.03); }
+  75%     { transform: scaleY(1.05) scaleX(0.98); }
+}
+
+@keyframes flame-burst {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.25); filter: brightness(1.3); }
+  60%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* ─── Fade-in scroll animation ──────────────────────────────────────────── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in { opacity: 1; transform: none; transition: none; }
+  .particle { display: none; }
+  .geo-spin-slow, .geo-spin-rev { animation: none; }
+}
+
+/* ─── Section shared styles ─────────────────────────────────────────────── */
+.section-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--saffron), var(--vermillion));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-divider {
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--light-saffron), transparent);
+  margin: 0 auto 3rem;
+}
+
+/* ─── Card shared styles ────────────────────────────────────────────────── */
+.sk-card {
+  background: var(--cream);
+  border: 1px solid rgba(230, 168, 23, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 2px 12px rgba(230, 168, 23, 0.06);
+}
+
+.sk-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(230, 168, 23, 0.15);
+  border-color: rgba(230, 168, 23, 0.4);
+}
+
+/* ─── Countdown ─────────────────────────────────────────────────────────── */
+.countdown {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.countdown-item {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  min-width: 90px;
+  backdrop-filter: blur(10px);
+}
+
+.countdown-item .number {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffd699;
+  line-height: 1;
+  display: block;
+}
+
+.countdown-item .label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 0.3rem;
+  display: block;
+}
+
+/* ─── Audio Player ──────────────────────────────────────────────────────── */
+.audio-player {
+  background: var(--soft-gold-bg);
+  border: 1px solid rgba(230, 168, 23, 0.25);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.play-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--saffron), var(--vermillion));
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.play-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(230, 81, 0, 0.4);
+}
+
+.audio-progress-container { flex: 1; min-width: 120px; }
+
+.audio-progress-bar {
+  height: 6px;
+  background: rgba(230, 168, 23, 0.2);
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.audio-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--saffron), var(--gold));
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.audio-time {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+/* ─── Puja Checklist ────────────────────────────────────────────────────── */
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--cream);
+  border: 1px solid rgba(230, 168, 23, 0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.checklist-item:hover { border-color: var(--gold); }
+.checklist-item.checked { background: rgba(230, 168, 23, 0.12); border-color: var(--gold); }
+
+.item-tick {
+  margin-left: auto;
+  color: var(--saffron);
+  font-weight: bold;
+  min-width: 16px;
+  text-align: right;
+}
+
+.checklist-progress-bar {
+  height: 8px;
+  background: rgba(230, 168, 23, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.checklist-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--saffron), var(--gold));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* ─── Vrat Timer ────────────────────────────────────────────────────────── */
+.vrat-display {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 3rem;
+  color: var(--bright-gold);
+  text-align: center;
+  letter-spacing: 4px;
+  text-shadow: 0 0 20px rgba(230, 168, 23, 0.3);
+}
+
+.milestone {
+  text-align: center;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(230, 168, 23, 0.2);
+  font-size: 0.85rem;
+  color: var(--text-light);
+  transition: all 0.3s ease;
+}
+
+.milestone.reached {
+  background: rgba(230, 168, 23, 0.12);
+  border-color: var(--gold);
+  color: var(--saffron);
+  font-weight: 600;
+}
+
+/* ─── Virtual Aarti ─────────────────────────────────────────────────────── */
+.aarti-flame {
+  font-size: 5rem;
+  cursor: pointer;
+  display: inline-block;
+  animation: flame-flicker 0.8s ease-in-out infinite;
+  transition: transform 0.1s;
+  user-select: none;
+}
+
+.aarti-flame.offering {
+  animation: flame-burst 0.4s ease-out;
+}
+
+/* ─── Hero ──────────────────────────────────────────────────────────────── */
+.hero-gradient {
+  background: linear-gradient(
+    to bottom,
+    rgba(26,10,46,0.15) 0%,
+    rgba(26,10,46,0.2)  30%,
+    rgba(45,24,84,0.5)  55%,
+    rgba(45,24,84,0.8)  75%,
+    rgba(45,24,84,0.95) 100%
+  );
+}
+
+/* ─── Badge / Tag ───────────────────────────────────────────────────────── */
+.sk-badge {
+  display: inline-block;
+  padding: 0.2rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: rgba(230, 168, 23, 0.12);
+  color: var(--saffron);
+  border: 1px solid rgba(230, 168, 23, 0.3);
+}
+
+/* ─── Button ────────────────────────────────────────────────────────────── */
+.sk-btn {
+  display: inline-block;
+  padding: 0.65rem 1.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.sk-btn-primary {
+  background: linear-gradient(135deg, var(--saffron), var(--vermillion));
+  color: white;
+}
+
+.sk-btn-primary:hover {
+  box-shadow: 0 4px 16px rgba(230, 81, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+.sk-btn-outline {
+  background: transparent;
+  color: var(--saffron);
+  border: 2px solid var(--saffron);
+}
+
+.sk-btn-outline:hover {
+  background: var(--saffron);
+  color: white;
 }
