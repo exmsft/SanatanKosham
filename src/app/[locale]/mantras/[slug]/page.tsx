@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getMantraBySlug, getMantraSlugs } from "@/lib/content";
+import { baseMetadata, SITE_URL } from "@/lib/seo";
+import { mantraSchema, breadcrumbSchema, jsonLdScript } from "@/lib/jsonld";
 import { Link } from "@/i18n/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import AudioPlayer from "@/components/shared/AudioPlayer";
@@ -19,10 +21,15 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const mantra = getMantraBySlug(slug);
   if (!mantra) return {};
-  return { title: mantra.frontmatter.title, description: mantra.frontmatter.description };
+  return {
+    title: mantra.frontmatter.title,
+    description: mantra.frontmatter.description,
+    keywords: mantra.frontmatter.tags,
+    ...baseMetadata(locale, `/mantras/${slug}`),
+  };
 }
 
 export default async function MantraPage({ params }: Props) {
@@ -33,8 +40,31 @@ export default async function MantraPage({ params }: Props) {
   if (!mantra) notFound();
   const { frontmatter, content } = mantra;
 
+  const jsonLd = [
+    mantraSchema({
+      title: frontmatter.title,
+      description: frontmatter.description,
+      slug,
+      locale,
+      sanskrit: frontmatter.sanskrit,
+      transliteration: frontmatter.transliteration,
+      meaning: frontmatter.meaning,
+      deity: frontmatter.deity,
+      benefits: frontmatter.benefits,
+      audioSrc: frontmatter.audioSrc,
+    }),
+    breadcrumbSchema([
+      { name: "Home", url: `${SITE_URL}/${locale}` },
+      { name: "Mantras", url: `${SITE_URL}/${locale}/mantras` },
+      { name: frontmatter.title, url: `${SITE_URL}/${locale}/mantras/${slug}` },
+    ]),
+  ];
+
   return (
     <div style={{ paddingTop: "4rem", minHeight: "100vh", background: "var(--warm-bg)" }}>
+      {jsonLd.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(schema) }} />
+      ))}
       <div style={{ background: "linear-gradient(135deg, var(--deep-blue), var(--royal-purple))", padding: "4rem 2rem 5rem", textAlign: "center" }}>
         <FadeIn>
           <div style={{ display: "flex", gap: "0.4rem", justifyContent: "center", marginBottom: "1rem", flexWrap: "wrap" }}>

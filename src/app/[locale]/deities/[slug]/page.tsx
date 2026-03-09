@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getDeityBySlug, getDeitySlugs } from "@/lib/content";
+import { baseMetadata, SITE_URL } from "@/lib/seo";
+import { deitySchema, breadcrumbSchema, jsonLdScript } from "@/lib/jsonld";
 import { Link } from "@/i18n/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import VirtualAarti from "@/components/shared/VirtualAarti";
@@ -18,10 +20,15 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const deity = getDeityBySlug(slug);
   if (!deity) return {};
-  return { title: deity.frontmatter.title, description: deity.frontmatter.description };
+  return {
+    title: deity.frontmatter.title,
+    description: deity.frontmatter.description,
+    keywords: deity.frontmatter.tags,
+    ...baseMetadata(locale, `/deities/${slug}`),
+  };
 }
 
 export default async function DeityPage({ params }: Props) {
@@ -32,8 +39,29 @@ export default async function DeityPage({ params }: Props) {
   if (!deity) notFound();
   const { frontmatter, content } = deity;
 
+  const jsonLd = [
+    deitySchema({
+      title: frontmatter.title,
+      description: frontmatter.description,
+      slug,
+      locale,
+      pantheon: frontmatter.pantheon,
+      consort: frontmatter.consort,
+      attributes: frontmatter.attributes,
+      tags: frontmatter.tags,
+    }),
+    breadcrumbSchema([
+      { name: "Home", url: `${SITE_URL}/${locale}` },
+      { name: "Deities", url: `${SITE_URL}/${locale}/deities` },
+      { name: frontmatter.title, url: `${SITE_URL}/${locale}/deities/${slug}` },
+    ]),
+  ];
+
   return (
     <div style={{ paddingTop: "4rem", minHeight: "100vh", background: "var(--warm-bg)" }}>
+      {jsonLd.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(schema) }} />
+      ))}
       <div style={{ background: "linear-gradient(135deg, var(--deep-blue), var(--royal-purple))", padding: "4rem 2rem 5rem", textAlign: "center" }}>
         <FadeIn>
           <Badge>{frontmatter.pantheon}</Badge>

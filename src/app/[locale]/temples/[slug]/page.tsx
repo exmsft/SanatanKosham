@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getTempleBySlug, getTempleSlugs } from "@/lib/content";
+import { baseMetadata, SITE_URL } from "@/lib/seo";
+import { templeSchema, breadcrumbSchema, jsonLdScript } from "@/lib/jsonld";
 import { Link } from "@/i18n/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Badge from "@/components/ui/Badge";
@@ -17,10 +19,15 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const temple = getTempleBySlug(slug);
   if (!temple) return {};
-  return { title: temple.frontmatter.title, description: temple.frontmatter.description };
+  return {
+    title: temple.frontmatter.title,
+    description: temple.frontmatter.description,
+    keywords: temple.frontmatter.tags,
+    ...baseMetadata(locale, `/temples/${slug}`),
+  };
 }
 
 export default async function TemplePage({ params }: Props) {
@@ -35,8 +42,31 @@ export default async function TemplePage({ params }: Props) {
     ? `https://www.google.com/maps?q=${frontmatter.coordinates.lat},${frontmatter.coordinates.lng}`
     : `https://www.google.com/maps/search/${encodeURIComponent(frontmatter.title)}`;
 
+  const jsonLd = [
+    templeSchema({
+      title: frontmatter.title,
+      description: frontmatter.description,
+      slug,
+      locale,
+      location: frontmatter.location,
+      state: frontmatter.state,
+      country: frontmatter.country,
+      coordinates: frontmatter.coordinates,
+      templeType: frontmatter.templeType,
+      tags: frontmatter.tags,
+    }),
+    breadcrumbSchema([
+      { name: "Home", url: `${SITE_URL}/${locale}` },
+      { name: "Temples", url: `${SITE_URL}/${locale}/temples` },
+      { name: frontmatter.title, url: `${SITE_URL}/${locale}/temples/${slug}` },
+    ]),
+  ];
+
   return (
     <div style={{ paddingTop: "4rem", minHeight: "100vh", background: "var(--warm-bg)" }}>
+      {jsonLd.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(schema) }} />
+      ))}
       <div style={{ background: "linear-gradient(135deg, var(--deep-blue), var(--royal-purple))", padding: "4rem 2rem 5rem", textAlign: "center" }}>
         <FadeIn>
           <div style={{ display: "flex", gap: "0.5rem", justifyContent: "center", marginBottom: "1rem", flexWrap: "wrap" }}>

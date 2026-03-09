@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
+import { baseMetadata } from "@/lib/seo";
 import FadeIn from "@/components/shared/FadeIn";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { locales } from "@/i18n/config";
@@ -22,6 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: t("pageTitle"),
     description: t("pageDescription"),
+    ...baseMetadata(locale, "/panchang"),
   };
 }
 

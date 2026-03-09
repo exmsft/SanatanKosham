@@ -1,6 +1,9 @@
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getFestivalBySlug, getFestivalSlugs } from "@/lib/content";
+import { baseMetadata } from "@/lib/seo";
+import { festivalSchema, breadcrumbSchema, jsonLdScript } from "@/lib/jsonld";
+import { SITE_URL } from "@/lib/seo";
 import { Link } from "@/i18n/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import CountdownTimer from "@/components/shared/CountdownTimer";
@@ -24,12 +27,21 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const festival = getFestivalBySlug(slug);
   if (!festival) return {};
+  const path = `/festivals/${slug}`;
   return {
     title: festival.frontmatter.title,
     description: festival.frontmatter.description,
+    keywords: festival.frontmatter.tags,
+    ...baseMetadata(locale, path),
+    openGraph: {
+      ...baseMetadata(locale, path).openGraph,
+      type: "article",
+      title: festival.frontmatter.title,
+      description: festival.frontmatter.description,
+    },
   };
 }
 
@@ -56,8 +68,28 @@ export default async function FestivalPage({ params }: Props) {
     ?.filter((d) => d.date >= today)
     .sort((a, b) => a.date.localeCompare(b.date))[0];
 
+  const jsonLd = [
+    festivalSchema({
+      title: frontmatter.title,
+      description: frontmatter.description,
+      slug,
+      locale,
+      gregorianDates: frontmatter.gregorianDates,
+      deity: frontmatter.deity,
+      tags: frontmatter.tags,
+    }),
+    breadcrumbSchema([
+      { name: "Home", url: `${SITE_URL}/${locale}` },
+      { name: "Festivals", url: `${SITE_URL}/${locale}/festivals` },
+      { name: frontmatter.title, url: `${SITE_URL}/${locale}/festivals/${slug}` },
+    ]),
+  ];
+
   return (
     <div style={{ paddingTop: "4rem", minHeight: "100vh", background: "var(--warm-bg)" }}>
+      {jsonLd.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(schema) }} />
+      ))}
       {/* Festival Hero */}
       <div
         style={{

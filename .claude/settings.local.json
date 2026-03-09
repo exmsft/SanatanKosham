@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npm list next-intl)",
-      "Bash(npm run build)"
+      "Bash(npm run build)",
+      "Bash(nslookup www.sanatankosham.com)"
     ]
   }
 }

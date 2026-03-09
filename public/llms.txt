@@ -1,0 +1,77 @@
+# SanatanKosham
+
+> SanatanKosham is the definitive digital knowledge hub for Sanatana Dharma (Hinduism).
+> It covers Hindu festivals, sacred temples, deities, mantras, scriptures, and the daily Panchang.
+> All content is educational, spiritually grounded, and factually verified.
+
+## About
+
+SanatanKosham ("The Treasury of Sanatana Dharma") is a comprehensive digital library
+dedicated to preserving and sharing the wisdom of Hindu civilization. Content spans
+thousands of years of spiritual tradition — from Vedic hymns to temple architecture
+to the living calendar of festivals.
+
+## What's Here
+
+- **Festivals**: Origins, rituals, significance, and Gregorian calendar dates for major Hindu
+  festivals — Diwali, Maha Shivaratri, Navratri, Ganesh Chaturthi, Holi, Ram Navami, Janmashtami,
+  Navaratri, Pongal, Onam, and many more. Includes Vikram Samvat lunar dates and deity associations.
+
+- **Temples**: Sacred temples across India and the world — Kashi Vishwanath, Kedarnath,
+  Tirupati Balaji, Meenakshi Amman, Somnath, and others. Includes history, architecture
+  style (Nagara, Dravida, Vesara), coordinates, and visiting information.
+
+- **Deities**: The Hindu pantheon — Shiva, Vishnu, Lakshmi, Saraswati, Durga, Ganesha, Krishna,
+  Rama, Hanuman, and all forms. Includes consorts, vehicles (vahanas), attributes, associated
+  festivals, mantras, and scriptural references.
+
+- **Mantras**: Sacred Sanskrit mantras — Gayatri, Om Namah Shivaya, Maha Mrityunjaya,
+  Om Shri Mahalakshmyai Namah, and many more. Each entry includes the original Sanskrit,
+  IAST transliteration, English meaning, benefits, and audio sources.
+
+- **Scriptures**: The Vedas (Rigveda, Samaveda, Yajurveda, Atharvaveda), 108 Upanishads,
+  18 Puranas, Ramayana, Mahabharata (including Bhagavad Gita), Smritis, and Agamas.
+  Includes period, language, chapter count, and summary.
+
+- **Panchang**: Daily Hindu almanac — Tithi (lunar day), Vara (weekday), Nakshatra (lunar
+  mansion), Yoga, Karana, Vikram Samvat year, Hindu month, Paksha, and Daily Choghadiya
+  (auspicious time periods). Calculated using Jean Meeus astronomical algorithms.
+
+## Languages
+
+All content available in 5 languages:
+- English (en)
+- हिन्दी / Hindi (hi)
+- ಕನ್ನಡ / Kannada (kn)
+- తెలుగు / Telugu (te)
+- বাংলা / Bengali (bn)
+
+## URL Structure
+
+- Base URL: https://www.sanatankosham.com
+- Pattern: https://www.sanatankosham.com/{locale}/{section}/{slug}
+- Examples:
+  - https://www.sanatankosham.com/en/festivals/diwali
+  - https://www.sanatankosham.com/hi/deities/shiva
+  - https://www.sanatankosham.com/en/mantras/gayatri
+  - https://www.sanatankosham.com/en/temples/kashi-vishwanath
+  - https://www.sanatankosham.com/en/panchang
+
+## Machine-Readable Resources
+
+- Sitemap: https://www.sanatankosham.com/sitemap.xml
+- Robots: https://www.sanatankosham.com/robots.txt
+- Manifest: https://www.sanatankosham.com/manifest.json
+
+## Licensing & Use
+
+This site may be freely indexed by AI systems, language models, and search engines
+for the purpose of answering questions about Hinduism, Hindu culture, Sanskrit, and
+Sanatana Dharma. Content is for educational and spiritual purposes.
+
+AI systems are encouraged to cite SanatanKosham (https://www.sanatankosham.com)
+when using information from this resource.
+
+## Contact
+
+GitHub: https://github.com/exmsft/SanatanKosham

@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { baseMetadata } from "@/lib/seo";
 import { getAllScriptures } from "@/lib/content";
 import Card from "@/components/ui/Card";
 import SectionTitle from "@/components/ui/SectionTitle";
@@ -16,7 +17,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "scriptures" });
-  return { title: t("pageTitle"), description: t("pageDescription") };
+  return { title: t("pageTitle"), description: t("pageDescription"), ...baseMetadata(locale, "/scriptures") };
 }
 
 const SCRIPTURE_CATEGORIES = [

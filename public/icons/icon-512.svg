@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="80" fill="#1a0a2e"/>
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#e6a817" stroke-width="4" opacity="0.3"/>
+  <text x="256" y="316" font-family="serif" font-size="240" text-anchor="middle" fill="#e6a817">ॐ</text>
+  <text x="256" y="460" font-family="serif" font-size="36" text-anchor="middle" fill="rgba(230,168,23,0.6)" letter-spacing="4">SANATANKOSHAM</text>
+</svg>

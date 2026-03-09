@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { baseMetadata } from "@/lib/seo";
 import { getAllFestivals } from "@/lib/content";
 import { Link } from "@/i18n/navigation";
 import Card from "@/components/ui/Card";
@@ -22,6 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: t("pageTitle"),
     description: t("pageDescription"),
+    ...baseMetadata(locale, "/festivals"),
   };
 }
 

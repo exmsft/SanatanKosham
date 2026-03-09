@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getScriptureBySlug, getScriptureSlugs } from "@/lib/content";
+import { baseMetadata, SITE_URL } from "@/lib/seo";
+import { scriptureSchema, breadcrumbSchema, jsonLdScript } from "@/lib/jsonld";
 import { Link } from "@/i18n/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Badge from "@/components/ui/Badge";
@@ -17,10 +19,15 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const scripture = getScriptureBySlug(slug);
   if (!scripture) return {};
-  return { title: scripture.frontmatter.title, description: scripture.frontmatter.description };
+  return {
+    title: scripture.frontmatter.title,
+    description: scripture.frontmatter.description,
+    keywords: scripture.frontmatter.tags,
+    ...baseMetadata(locale, `/scriptures/${slug}`),
+  };
 }
 
 export default async function ScripturePage({ params }: Props) {
@@ -31,8 +38,30 @@ export default async function ScripturePage({ params }: Props) {
   if (!scripture) notFound();
   const { frontmatter, content } = scripture;
 
+  const jsonLd = [
+    scriptureSchema({
+      title: frontmatter.title,
+      description: frontmatter.description,
+      slug,
+      locale,
+      category: frontmatter.category,
+      language: frontmatter.language,
+      period: frontmatter.period,
+      chapters: frontmatter.chapters,
+      tags: frontmatter.tags,
+    }),
+    breadcrumbSchema([
+      { name: "Home", url: `${SITE_URL}/${locale}` },
+      { name: "Scriptures", url: `${SITE_URL}/${locale}/scriptures` },
+      { name: frontmatter.title, url: `${SITE_URL}/${locale}/scriptures/${slug}` },
+    ]),
+  ];
+
   return (
     <div style={{ paddingTop: "4rem", minHeight: "100vh", background: "var(--warm-bg)" }}>
+      {jsonLd.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(schema) }} />
+      ))}
       <div style={{ background: "linear-gradient(135deg, var(--deep-blue), var(--royal-purple))", padding: "4rem 2rem 5rem", textAlign: "center" }}>
         <FadeIn>
           <div style={{ display: "flex", gap: "0.4rem", justifyContent: "center", marginBottom: "1rem", flexWrap: "wrap" }}>

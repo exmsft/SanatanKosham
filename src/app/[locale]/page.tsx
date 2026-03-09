@@ -1,4 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import type { Metadata } from "next";
+import { baseMetadata } from "@/lib/seo";
 import { Link } from "@/i18n/navigation";
 import { getUpcomingFestivals, getAllFestivals, getAllTemples, getAllDeities } from "@/lib/content";
 import SacredGeometry from "@/components/shared/SacredGeometry";
@@ -19,6 +21,24 @@ const CATEGORY_KEYS = [
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
+}
+
+interface Props { params: Promise<{ locale: string }> }
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  return {
+    title: t("siteTitle"),
+    description: t("siteDescription"),
+    ...baseMetadata(locale, ""),
+    openGraph: {
+      ...baseMetadata(locale, "").openGraph,
+      type: "website",
+      title: t("siteTitle"),
+      description: t("siteDescription"),
+    },
+  };
 }
 
 interface Props {

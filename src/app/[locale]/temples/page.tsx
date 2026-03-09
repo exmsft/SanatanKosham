@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { baseMetadata } from "@/lib/seo";
 import { getAllTemples } from "@/lib/content";
 import { Link } from "@/i18n/navigation";
 import Card from "@/components/ui/Card";
@@ -17,7 +18,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "temples" });
-  return { title: t("pageTitle"), description: t("pageDescription") };
+  return { title: t("pageTitle"), description: t("pageDescription"), ...baseMetadata(locale, "/temples") };
 }
 
 export default async function TemplesPage({ params }: Props) {

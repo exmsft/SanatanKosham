@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import { baseMetadata, SITE_URL } from "@/lib/seo";
+import { websiteSchema } from "@/lib/jsonld";
 import {
   Cinzel_Decorative,
   Poppins,
@@ -93,20 +95,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
   return {
+    ...baseMetadata(locale, ""),
     title: {
       default: t("siteTitle"),
       template: `%s | SanatanKosham`,
     },
     description: t("siteDescription"),
     keywords: [
-      "Hindu festivals",
-      "Hindu temples",
-      "Hindu deities",
-      "Sanskrit mantras",
-      "Hindu scriptures",
-      "Sanatana Dharma",
+      "Hindu festivals", "Hindu temples", "Hindu deities",
+      "Sanskrit mantras", "Hindu scriptures", "Sanatana Dharma",
+      "Panchang", "Vikram Samvat", "Choghadiya",
     ],
-    authors: [{ name: "SanatanKosham" }],
+    authors: [{ name: "SanatanKosham", url: SITE_URL }],
+    creator: "SanatanKosham",
+    publisher: "SanatanKosham",
     manifest: "/manifest.json",
     appleWebApp: {
       capable: true,
@@ -116,6 +118,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       type: "website",
       siteName: "SanatanKosham",
+      title: t("siteTitle"),
+      description: t("siteDescription"),
+      url: `${SITE_URL}/${locale}`,
+      locale,
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@SanatanKosham",
       title: t("siteTitle"),
       description: t("siteDescription"),
     },
@@ -146,6 +156,10 @@ export default async function LocaleLayout({ children, params }: Props) {
       className={`${cinzelDecorative.variable} ${poppins.variable} ${playfairDisplay.variable} ${scriptFontVariable}`}
     >
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema()) }}
+        />
         <NextIntlClientProvider messages={messages}>
           <Header />
           <main>{children}</main>
