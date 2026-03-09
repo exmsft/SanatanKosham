@@ -9,6 +9,7 @@
     "deities": "ದೇವತೆಗಳು",
     "mantras": "ಮಂತ್ರಗಳು",
     "scriptures": "ಶಾಸ್ತ್ರಗಳು",
+    "panchang": "ಪಂಚಾಂಗ",
     "toggleMenu": "ಮೆನು ತೆರೆಯಿರಿ"
   },
   "home": {
@@ -48,6 +49,10 @@
     "scriptures": {
       "title": "ಶಾಸ್ತ್ರಗಳು",
       "description": "ವೇದಗಳು, ಪುರಾಣಗಳು, ಉಪನಿಷದ್‌ಗಳು ಮತ್ತು ಸ್ಮೃತಿಗಳು — ಸನಾತನ ಧರ್ಮದ ಶಾಶ್ವತ ಗ್ರಂಥಗಳು."
+    },
+    "panchang": {
+      "title": "ಪಂಚಾಂಗ",
+      "description": "ದೈನಂದಿನ ಹಿಂದೂ ಪಂಚಾಂಗ — ತಿಥಿ, ನಕ್ಷತ್ರ, ಯೋಗ, ಚೌಘಡಿಯ ಮತ್ತು ವಿಕ್ರಮ ಸಂವತ್ ಕ್ಯಾಲೆಂಡರ್."
     }
   },
   "festivals": {
@@ -125,5 +130,33 @@
   "languageSwitcher": {
     "label": "ಭಾಷೆ",
     "ariaLabel": "ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ"
+  },
+  "panchang": {
+    "pageTitle": "ಹಿಂದೂ ಪಂಚಾಂಗ",
+    "pageDescription": "ದೈನಂದಿನ ಹಿಂದೂ ಪಂಚಾಂಗ — ತಿಥಿ, ನಕ್ಷತ್ರ, ಯೋಗ, ಕರಣ, ವಾರ, ವಿಕ್ರಮ ಸಂವತ್ ಕ್ಯಾಲೆಂಡರ್ ಮತ್ತು ಚೌಘಡಿಯ.",
+    "heroSubtitle": "ಸನಾತನ ಧರ್ಮದ ಪವಿತ್ರ ಪಂಚಾಂಗ — ಶುಭ ಸಮಯಗಳು, ತಿಥಿಗಳು ಮತ್ತು ಕಾಲದ ದಿವ್ಯ ಲಯ.",
+    "todayTitle": "ಇಂದಿನ ಪಂಚಾಂಗ",
+    "calendarTitle": "ವಿಕ್ರಮ ಸಂವತ್ ಕ್ಯಾಲೆಂಡರ್",
+    "choghadiyaTitle": "ದೈನಂದಿನ ಚೌಘಡಿಯ",
+    "tithi": "ತಿಥಿ",
+    "vara": "ವಾರ",
+    "nakshatra": "ನಕ್ಷತ್ರ",
+    "yoga": "ಯೋಗ",
+    "karana": "ಕರಣ",
+    "shuklaPaksha": "ಶುಕ್ಲ ಪಕ್ಷ",
+    "krishnaPaksha": "ಕೃಷ್ಣ ಪಕ್ಷ",
+    "vikramSamvat": "ವಿಕ್ರಮ ಸಂವತ್",
+    "sunrise": "ಸೂರ್ಯೋದಯ",
+    "sunset": "ಸೂರ್ಯಾಸ್ತ",
+    "dayChoghadiya": "ಹಗಲಿನ ಚೌಘಡಿಯ",
+    "nightChoghadiya": "ರಾತ್ರಿಯ ಚೌಘಡಿಯ",
+    "excellent": "ಅತ್ಯುತ್ತಮ",
+    "good": "ಶುಭ",
+    "neutral": "ಸಾಮಾನ್ಯ",
+    "bad": "ತಪ್ಪಿಸಿ",
+    "currentPeriod": "ಈಗ",
+    "prevMonth": "← ಹಿಂದಿನ",
+    "nextMonth": "ಮುಂದಿನ →",
+    "today": "ಇಂದು"
   }
 }

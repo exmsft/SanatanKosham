@@ -14,6 +14,7 @@ const CATEGORY_KEYS = [
   { key: "deities", href: "/deities", icon: "✨", color: "var(--vermillion)" },
   { key: "mantras", href: "/mantras", icon: "ॐ", color: "var(--bright-gold)" },
   { key: "scriptures", href: "/scriptures", icon: "📜", color: "var(--warm-orange)" },
+  { key: "panchang", href: "/panchang", icon: "📅", color: "var(--bright-gold)" },
 ] as const;
 
 export function generateStaticParams() {

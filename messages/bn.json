@@ -9,6 +9,7 @@
     "deities": "দেবতা",
     "mantras": "মন্ত্র",
     "scriptures": "শাস্ত্র",
+    "panchang": "পঞ্চাং",
     "toggleMenu": "মেনু খুলুন"
   },
   "home": {
@@ -48,6 +49,10 @@
     "scriptures": {
       "title": "শাস্ত্র",
       "description": "বেদ, পুরাণ, উপনিষদ ও স্মৃতি — সনাতন ধর্মের চিরন্তন গ্রন্থ।"
+    },
+    "panchang": {
+      "title": "পঞ্চাং",
+      "description": "দৈনিক হিন্দু পঞ্চাং — তিথি, নক্ষত্র, যোগ, চোঘড়িয়া এবং বিক্রম সংবৎ ক্যালেন্ডার।"
     }
   },
   "festivals": {
@@ -125,5 +130,33 @@
   "languageSwitcher": {
     "label": "ভাষা",
     "ariaLabel": "ভাষা নির্বাচন করুন"
+  },
+  "panchang": {
+    "pageTitle": "হিন্দু পঞ্চাং",
+    "pageDescription": "দৈনিক হিন্দু পঞ্চাং — তিথি, নক্ষত্র, যোগ, করণ, বার, বিক্রম সংবৎ ক্যালেন্ডার ও চোঘড়িয়া।",
+    "heroSubtitle": "সনাতন ধর্মের পবিত্র পঞ্চাং — শুভ সময়, তিথি এবং কালের দিব্য ছন্দ।",
+    "todayTitle": "আজকের পঞ্চাং",
+    "calendarTitle": "বিক্রম সংবৎ ক্যালেন্ডার",
+    "choghadiyaTitle": "দৈনিক চোঘড়িয়া",
+    "tithi": "তিথি",
+    "vara": "বার",
+    "nakshatra": "নক্ষত্র",
+    "yoga": "যোগ",
+    "karana": "করণ",
+    "shuklaPaksha": "শুক্ল পক্ষ",
+    "krishnaPaksha": "কৃষ্ণ পক্ষ",
+    "vikramSamvat": "বিক্রম সংবৎ",
+    "sunrise": "সূর্যোদয়",
+    "sunset": "সূর্যাস্ত",
+    "dayChoghadiya": "দিনের চোঘড়িয়া",
+    "nightChoghadiya": "রাতের চোঘড়িয়া",
+    "excellent": "অতি শুভ",
+    "good": "শুভ",
+    "neutral": "সাধারণ",
+    "bad": "এড়িয়ে চলুন",
+    "currentPeriod": "এখন",
+    "prevMonth": "← আগে",
+    "nextMonth": "পরে →",
+    "today": "আজ"
   }
 }

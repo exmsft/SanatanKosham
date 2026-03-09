@@ -9,6 +9,7 @@
     "deities": "Deities",
     "mantras": "Mantras",
     "scriptures": "Scriptures",
+    "panchang": "Panchang",
     "toggleMenu": "Toggle menu"
   },
   "home": {
@@ -48,6 +49,10 @@
     "scriptures": {
       "title": "Scriptures",
       "description": "The Vedas, Puranas, Upanishads, and Smritis — the timeless texts of Sanatana Dharma."
+    },
+    "panchang": {
+      "title": "Panchang",
+      "description": "Daily Hindu almanac — Tithi, Nakshatra, Yoga, Choghadiya, and the Vikram Samvat calendar."
     }
   },
   "festivals": {
@@ -125,5 +130,33 @@
   "languageSwitcher": {
     "label": "Language",
     "ariaLabel": "Select language"
+  },
+  "panchang": {
+    "pageTitle": "Hindu Panchang",
+    "pageDescription": "Daily Hindu almanac with Tithi, Nakshatra, Yoga, Karana, Vara, Vikram Samvat calendar, and Choghadiya.",
+    "heroSubtitle": "The sacred almanac of Sanatana Dharma — auspicious times, lunar days, and the cosmic rhythm of time.",
+    "todayTitle": "Today's Panchang",
+    "calendarTitle": "Vikram Samvat Calendar",
+    "choghadiyaTitle": "Daily Choghadiya",
+    "tithi": "Tithi",
+    "vara": "Vara",
+    "nakshatra": "Nakshatra",
+    "yoga": "Yoga",
+    "karana": "Karana",
+    "shuklaPaksha": "Shukla Paksha",
+    "krishnaPaksha": "Krishna Paksha",
+    "vikramSamvat": "Vikram Samvat",
+    "sunrise": "Sunrise",
+    "sunset": "Sunset",
+    "dayChoghadiya": "Day Choghadiya",
+    "nightChoghadiya": "Night Choghadiya",
+    "excellent": "Excellent",
+    "good": "Auspicious",
+    "neutral": "Neutral",
+    "bad": "Avoid",
+    "currentPeriod": "Now",
+    "prevMonth": "← Prev",
+    "nextMonth": "Next →",
+    "today": "Today"
   }
 }

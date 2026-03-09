@@ -9,6 +9,7 @@
     "deities": "देवी-देवता",
     "mantras": "मंत्र",
     "scriptures": "शास्त्र",
+    "panchang": "पंचांग",
     "toggleMenu": "मेनू टॉगल करें"
   },
   "home": {
@@ -48,6 +49,10 @@
     "scriptures": {
       "title": "शास्त्र",
       "description": "वेद, पुराण, उपनिषद और स्मृतियाँ — सनातन धर्म के शाश्वत ग्रंथ।"
+    },
+    "panchang": {
+      "title": "पंचांग",
+      "description": "दैनिक हिंदू पंचांग — तिथि, नक्षत्र, योग, चौघड़िया और विक्रम संवत कैलेंडर।"
     }
   },
   "festivals": {
@@ -125,5 +130,33 @@
   "languageSwitcher": {
     "label": "भाषा",
     "ariaLabel": "भाषा चुनें"
+  },
+  "panchang": {
+    "pageTitle": "हिंदू पंचांग",
+    "pageDescription": "दैनिक हिंदू पंचांग — तिथि, नक्षत्र, योग, करण, वार, विक्रम संवत कैलेंडर और चौघड़िया।",
+    "heroSubtitle": "सनातन धर्म का पवित्र पंचांग — शुभ समय, तिथियाँ और काल की दिव्य लय।",
+    "todayTitle": "आज का पंचांग",
+    "calendarTitle": "विक्रम संवत कैलेंडर",
+    "choghadiyaTitle": "दैनिक चौघड़िया",
+    "tithi": "तिथि",
+    "vara": "वार",
+    "nakshatra": "नक्षत्र",
+    "yoga": "योग",
+    "karana": "करण",
+    "shuklaPaksha": "शुक्ल पक्ष",
+    "krishnaPaksha": "कृष्ण पक्ष",
+    "vikramSamvat": "विक्रम संवत",
+    "sunrise": "सूर्योदय",
+    "sunset": "सूर्यास्त",
+    "dayChoghadiya": "दिन की चौघड़िया",
+    "nightChoghadiya": "रात की चौघड़िया",
+    "excellent": "अति शुभ",
+    "good": "शुभ",
+    "neutral": "सामान्य",
+    "bad": "अशुभ",
+    "currentPeriod": "अभी",
+    "prevMonth": "← पिछला",
+    "nextMonth": "अगला →",
+    "today": "आज"
   }
 }

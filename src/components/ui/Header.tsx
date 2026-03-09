@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import LanguageSwitcher from "./LanguageSwitcher";
 
-const NAV_KEYS = ["festivals", "temples", "deities", "mantras", "scriptures"] as const;
+const NAV_KEYS = ["festivals", "temples", "deities", "mantras", "scriptures", "panchang"] as const;
 type NavKey = (typeof NAV_KEYS)[number];
 
 export default function Header() {
